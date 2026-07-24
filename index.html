@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MG AI - Discord Bot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+
+    
+
+<style>
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Naskh Arabic', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* RTL Support */
+        body[dir="rtl"] {
+            direction: rtl;
+            font-family: 'Noto Naskh Arabic', 'Inter', sans-serif;
+        }
+
+        body[dir="rtl"] .nav-links {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .hero-content {
+            direction: rtl;
+        }
+
+        body[dir="rtl"] .feature-card {
+            text-align: center;
+        }
+
+        body[dir="rtl"] .command-item {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .badge {
+            letter-spacing: 0;
+        }
+
+        /* Animated background */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.03) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-effects::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 136, 255, 0.03) 0%, transparent 70%);
+            bottom: -200px;
+            right: -200px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, -50px) rotate(120deg); }
+            66% { transform: translate(-30px, 30px) rotate(240deg); }
+        }
+
+        /* Grid pattern overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-image: url(/444.png);
+            background-size: cover;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ff88, #0088ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        /* Language Toggle */
+        .langToggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .langToggle:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .langToggle .flag {
+            font-size: 16px;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #00ff88, #0088ff);
+            color: #0a0a0f !important;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: transform 0.3s, box-shadow 0.3s !important;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .hero {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 50px 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 50px;
+            color: #00ff88;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #00ff88, #0088ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #00ff88, #0088ff);
+            color: #0a0a0f;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            position: relative;
+            z-index: 2;
+            padding: 100px 50px;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 136, 255, 0.1));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Commands Preview Section */
+        .commands-preview {
+            position: relative;
+            z-index: 2;
+            padding: 100px 50px;
+            text-align: center;
+        }
+
+        .commands-preview h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 60px;
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .command-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color 0.3s;
+        }
+
+        .command-item:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .command-item code {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .command-item span {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 2;
+            padding: 40px 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+        }
+
+        footer .brand {
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links a:not(.login-btn):not(.langToggle) {
+                display: none;
+            }
+
+            .hero {
+                padding: 80px 20px 40px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .features, .commands-preview {
+                padding: 60px 20px;
+            }
+
+            .features h2, .commands-preview h2 {
+                font-size: 28px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+/* ==========================================
+   تنسيق زر تغيير اللغة فقط (SA العربية)
+   ========================================== */
+.lang-btn, 
+#langToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+/* تأثير عند تحريك الماوس فوق الزر */
+.lang-btn:hover, 
+#langToggle:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* تأثير عند الضغط على الزر */
+.lang-btn:active, 
+#langToggle:active {
+  transform: translateY(0);
+}
+
+</style>
+
+    </head>
+<body>
+    <div class="bg-effects"></div>
+    <div class="grid-overlay"></div>
+
+<!-- Navigation -->
+<nav>
+    <a href="/" class="logo">
+        <div class="logo-icon"><img src="/444.png" alt="MG AI Logo" style="width:40px;height:40px;border-radius:50px;object-fit:cover;"></div>
+        <span class="logo-text">MG AI</span>
+    </a>
+    <div class="nav-links">
+        <a href="#features" id="navFeatures" data-i18n="nav_features">Features</a>
+        <a href="#commands" id="navCommands" data-i18n="nav_commands">Commands</a>
+        <a href="https://discord.com/channels/1530185520834023576/1530185522469671019" target="_blank" id="navSupport" data-i18n="nav_support">Support</a>
+        
+        <!-- زر التبديل -->
+       <button type="button" id="langToggle" class="lang-btn">
+    <span id="langFlag">sa</span>
+    <span id="langLabel">العربية</span>
+</button>
+        
+        <a href="/auth/discord" class="login-btn" id="navLogin">
+    <i class="fab fa-discord"></i>
+    <span id="loginText">Login with Discord</span>
+</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="badge" id="heroBadge" data-i18n="hero_badge">🚀 v1.0.0 • Powered by MG CoDe</div>
+        <h1 id="heroTitle" data-i18n="hero_title">Meet <span>MG AI</span><br>Your Intelligent Discord Bot</h1>
+        <p id="heroDesc" data-i18n="hero_desc">AI-powered chat, advanced moderation, and complete server management. The all-in-one bot your Discord server needs.</p>
+        <div class="hero-buttons">
+           <a href="https://discord.com/oauth2/authorize?client_id=1529487107662418071&permissions=8&scope=bot%20applications.commands" class="btn-primary" id="heroAddBtn" target="_blank">
+    <i class="fab fa-discord"></i>
+    <span id="addBtnText">Add to Server</span>
+</a>
+            <a href="https://discord.com/channels/1530185520834023576/1530185522469671019" target="_blank" class="btn-secondary" id="heroSupportBtn">
+                <i class="fas fa-headset"></i>
+                <span id="supportBtnText" data-i18n="btn_support">Support Server</span>
+            </a>
+        </div>
+    </div>
+</section>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 id="sectionFeatures">✨ Powerful Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 id="featureAIChat">AI Chat</h3>
+                <p id="featureAIChatDesc">Natural conversations with advanced AI. Just mention the bot and start chatting!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 id="featureMod">Moderation</h3>
+                <p id="featureModDesc">Complete moderation toolkit: kick, ban, timeout, warn, clear messages, and more.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3 id="featureMgmt">Server Management</h3>
+                <p id="featureMgmtDesc">Lock/unlock channels, set slowmode, make announcements, and manage your server efficiently.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 id="featureStats">Server Stats</h3>
+                <p id="featureStatsDesc">Get detailed information about users, server status, and bot performance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 id="featureFilter">Content Filtering</h3>
+                <p id="featureFilterDesc">Built-in restrictions to prevent harmful, illegal, or inappropriate content.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3 id="featureSetup">Easy Setup</h3>
+                <p id="featureSetupDesc">Add the bot to your server with just a few clicks. No complicated configuration needed!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Preview -->
+    <section class="commands-preview" id="commands">
+        <h2 id="sectionCommands">📋 Available Commands</h2>
+        <div class="commands-grid">
+            <div class="command-item">
+                <code>/chat</code>
+                <span id="cmdChat">AI conversation</span>
+            </div>
+            <div class="command-item">
+                <code>/kick</code>
+                <span id="cmdKick">Kick members</span>
+            </div>
+            <div class="command-item">
+                <code>/ban</code>
+                <span id="cmdBan">Ban members</span>
+            </div>
+            <div class="command-item">
+                <code>/timeout</code>
+                <span id="cmdTimeout">Timeout members</span>
+            </div>
+            <div class="command-item">
+                <code>/warn</code>
+                <span id="cmdWarn">Warn members</span>
+            </div>
+            <div class="command-item">
+                <code>/clear</code>
+                <span id="cmdClear">Clear messages</span>
+            </div>
+            <div class="command-item">
+                <code>/announce</code>
+                <span id="cmdAnnounce">Make announcements</span>
+            </div>
+            <div class="command-item">
+                <code>/lock</code>
+                <span id="cmdLock">Lock channel</span>
+            </div>
+            <div class="command-item">
+                <code>/unlock</code>
+                <span id="cmdUnlock">Unlock channel</span>
+            </div>
+            <div class="command-item">
+                <code>/slowmode</code>
+                <span id="cmdSlowmode">Set slowmode</span>
+            </div>
+            <div class="command-item">
+                <code>/userinfo</code>
+                <span id="cmdUserinfo">User info</span>
+            </div>
+            <div class="command-item">
+                <code>/serverinfo</code>
+                <span id="cmdServerinfo">Server info</span>
+            </div>
+            <div class="command-item">
+                <code>/ping</code>
+                <span id="cmdPing">Check latency</span>
+            </div>
+            <div class="command-item">
+                <code>/avatar</code>
+                <span id="cmdAvatar">Get avatar</span>
+            </div>
+            <div class="command-item">
+                <code>/botinfo</code>
+                <span id="CmdBotinfo">Bot info</span>
+            </div>
+            <div class="command-item">
+                <code>/help</code>
+                <span id="cmdHelp">Show help</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="brand">𝗠𝗚 𝗖𝗼𝗗𝗲</span>
+        <a href="https://discord.gg/JtqTu6TzHm" target="_blank" rel="noopener noreferrer" style="color: var(--text-secondary); text-decoration: none;">
+            <i class="fab fa-discord"></i>
+        </a>
+        <span id="footerText">© 2026 • All Rights Reserved</span>
+    </footer>
+
+    <script>
+        // اللغة الافتراضية
+        let currentLang = localStorage.getItem('mg-ai-lang') || 'ar';
+        let translations = {};
+        let botInfo = {};
+
+        // جلب البيانات من السيرفر
+        async function loadTranslations(lang) {
+            const toggleBtn = document.getElementById('langToggle');
+            if (toggleBtn) toggleBtn.disabled = true;
+            
+            try {
+                const res = await fetch(`/api/translations?lang=${lang}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                
+                translations = data.translations;
+                botInfo = {
+                    botName: data.botName,
+                    botVersion: data.botVersion,
+                    supportServer: data.supportServer
+                };
+                currentLang = data.lang;
+                applyTranslations();
+                localStorage.setItem('mg-ai-lang', lang);
+            } catch (err) {
+                console.error('Failed to load translations:', err);
+                // Fallback: try local file
+                try {
+                    const localRes = await fetch(`locales/${lang}.json`);
+                    if (localRes.ok) {
+                        const localData = await localRes.json();
+                        translations = localData.translations;
+                        botInfo = {
+                            botName: localData.botName,
+                            botVersion: localData.botVersion,
+                            supportServer: localData.supportServer
+                        };
+                        currentLang = localData.lang;
+                        applyTranslations();
+                        localStorage.setItem('mg-ai-lang', lang);
+                    }
+                } catch (localErr) {
+                    console.error('Local fallback also failed:', localErr);
+                }
+            } finally {
+                if (toggleBtn) toggleBtn.disabled = false;
+            }
+        }
+
+        // تطبيق الترجمات على الصفحة
+        function applyTranslations() {
+            if (!translations) return;
+
+            // ضبط الاتجاه RTL/LTR
+            document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = currentLang;
+
+            // القائمة العلوية
+            setText('navFeatures', translations.navFeatures);
+            setText('navCommands', translations.navCommands);
+            setText('navSupport', translations.navSupport);
+            setText('loginText', translations.navLogin);
+
+            // زر التحويل
+            const flagEl = document.getElementById('langFlag');
+            const labelEl = document.getElementById('langLabel');
+            
+            if (currentLang === 'ar') {
+                if (flagEl) flagEl.textContent = '🇬🇧';
+                if (labelEl) labelEl.textContent = 'English';
+            } else {
+                if (flagEl) flagEl.textContent = '🇸🇦';
+                if (labelEl) labelEl.textContent = 'العربية';
+            }
+
+            // القسم الرئيسي (Hero)
+            setText('heroBadge', translations.heroBadge);
+            if (translations.heroTitle) {
+                setHtml('heroTitle', translations.heroTitle.replace(/\{botName\}/g, botInfo.botName || 'MG AI'));
+            }
+            setText('heroDesc', translations.heroDesc);
+            setText('addBtnText', translations.heroAddBtn);
+            setText('supportBtnText', translations.heroSupportBtn);
+
+            // قسم المميزات
+            setText('sectionFeatures', translations.sectionFeatures);
+            setText('featureAIChat', translations.featureAIChat);
+            setText('featureAIChatDesc', translations.featureAIChatDesc);
+            setText('featureMod', translations.featureMod);
+            setText('featureModDesc', translations.featureModDesc);
+            setText('featureMgmt', translations.featureMgmt);
+            setText('featureMgmtDesc', translations.featureMgmtDesc);
+            setText('featureStats', translations.featureStats);
+            setText('featureStatsDesc', translations.featureStatsDesc);
+            setText('featureFilter', translations.featureFilter);
+            setText('featureFilterDesc', translations.featureFilterDesc);
+            setText('featureSetup', translations.featureSetup);
+            setText('featureSetupDesc', translations.featureSetupDesc);
+
+            // قسم الأوامر
+            setText('sectionCommands', translations.sectionCommands);
+            setText('cmdChat', translations.cmdChat);
+            setText('cmdKick', translations.cmdKick);
+            setText('cmdBan', translations.cmdBan);
+            setText('cmdTimeout', translations.cmdTimeout);
+            setText('cmdWarn', translations.cmdWarn);
+            setText('cmdClear', translations.cmdClear);
+            setText('cmdAnnounce', translations.cmdAnnounce);
+            setText('cmdLock', translations.cmdLock);
+            setText('cmdUnlock', translations.cmdUnlock);
+            setText('cmdSlowmode', translations.cmdSlowmode);
+            setText('cmdUserinfo', translations.cmdUserinfo);
+            setText('cmdServerinfo', translations.cmdServerinfo);
+            setText('cmdPing', translations.cmdPing);
+            setText('cmdAvatar', translations.cmdAvatar);
+            setText('CmdBotinfo', translations.cmdBotinfo);
+            setText('cmdHelp', translations.cmdHelp);
+
+            // الـ Footer
+            if (translations.footerText) {
+                setHtml('footerText', translations.footerText.replace(/\{year\}/g, new Date().getFullYear()));
+            }
+        }
+
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el && text !== undefined) el.textContent = text;
+        }
+
+        function setHtml(id, html) {
+            const el = document.getElementById(id);
+            if (el && html !== undefined) el.innerHTML = html;
+        }
+
+        // تبديل اللغة عند النقر
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('langToggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const nextLang = currentLang === 'ar' ? 'en' : 'ar';
+                    loadTranslations(nextLang);
+                });
+            }
+            loadTranslations(currentLang);
+        });
+    </script>
+    <!-- ⬆️ نهاية الكود ⬆️ -->
+</body>
+</html>

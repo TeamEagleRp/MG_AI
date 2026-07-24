@@ -1,0 +1,21 @@
+{
+  "name": "mg-ai-discord-bot",
+  "version": "1.0.0",
+  "description": "MG AI - Complete Discord AI Bot with Admin Commands",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "website": "node website/server.js",
+    "dev": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "ejs": "^3.1.9",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "ms": "^2.1.3"
+  }
+}
+
