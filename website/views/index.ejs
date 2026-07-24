@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= lang === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= config.botName %> - <%= lang === 'ar' ? 'الموقع الرسمي' : 'Official Website' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="nav-logo">MG AI</span>
+                <span class="nav-badge">444</span>
+            </div>
+            <div class="nav-links">
+                <% if (user) { %>
+                    <a href="/dashboard" class="nav-link"><%= lang === 'ar' ? 'لوحة التحكم' : 'Dashboard' %></a>
+                    <div class="user-menu">
+                        <img src="<%= user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}${user.avatar.startsWith('a_') ? '.gif' : '.png'}` : '/img/default-avatar.svg' %>" alt="Avatar" class="user-avatar">
+                        <span><%= user.global_name || user.username %></span>
+                        <a href="/auth/logout" class="btn btn-sm btn-secondary"><%= lang === 'ar' ? 'تسجيل خروج' : 'Logout' %></a>
+                    </div>
+                <% } else { %>
+                    <a href="/auth/discord" class="btn btn-discord">
+                        <span class="discord-icon"></span>
+                        <%= lang === 'ar' ? 'تسجيل دخول عبر دسكورد' : 'Login with Discord' %>
+                    </a>
+                <% } %>
+                <form action="/lang/<%= lang === 'ar' ? 'en' : 'ar' %>" method="POST" class="lang-form">
+                    <button type="submit" class="btn btn-lang">
+                        <%= lang === 'ar' ? '🇬🇧 English' : '🇸🇦 العربية' %>
+                    </button>
+                </form>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">MG CoDe</div>
+                <h1 class="hero-title">
+                    <%= lang === 'ar' ? 'بوت ذكاء اصطناعي متكامل' : 'Complete AI Bot' %>
+                </h1>
+                <p class="hero-subtitle">
+                    <%= lang === 'ar' 
+                        ? 'MG AI هو بوت دسكورد متكامل مع تقنيات الذكاء الاصطناعي، أوامر إدارية متطورة، ودعم للغتين العربية والإنجليزية'
+                        : 'MG AI is a complete Discord bot with AI technology, advanced admin commands, and bilingual support (Arabic & English)'
+                    %>
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label"><%= lang === 'ar' ? 'أمر' : 'Commands' %></span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label"><%= lang === 'ar' ? 'لغات' : 'Languages' %></span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label"><%= lang === 'ar' ? 'تشغيل' : 'Uptime' %></span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=<%= config.clientId %>&permissions=8&scope=bot%20applications.commands" class="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">
+                        <%= lang === 'ar' ? '➕ أضف البوت لسيرفرك' : '➕ Add Bot to Server' %>
+                    </a>
+                    <a href="<%= config.supportServer %>" class="btn btn-secondary btn-lg" target="_blank" rel="noopener noreferrer">
+                        <%= lang === 'ar' ? '🎧 سيرفر الدعم' : '🎧 Support Server' %>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="bot-avatar-large">
+                    <span class="avatar-text">MG AI</span>
+                    <span class="avatar-sub">444</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">
+                <%= lang === 'ar' ? '🚀 المميزات' : '🚀 Features' %>
+            </h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3><%= lang === 'ar' ? 'ذكاء اصطناعي' : 'Artificial Intelligence' %></h3>
+                    <p><%= lang === 'ar' ? 'بوت ذكاء اصطناعي متطور يجيب على جميع أسئلتك' : 'Advanced AI bot that answers all your questions' %></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3><%= lang === 'ar' ? 'أوامر إدارية' : 'Admin Commands' %></h3>
+                    <p><%= lang === 'ar' ? 'مجموعة متكاملة من الأوامر الإدارية لإدارة سيرفرك' : 'Complete set of admin commands to manage your server' %></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3><%= lang === 'ar' ? 'دعم ثنائي اللغة' : 'Bilingual Support' %></h3>
+                    <p><%= lang === 'ar' ? 'يدعم اللغتين العربية والإنجليزية بسلاسة' : 'Seamlessly supports Arabic and English languages' %></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3><%= lang === 'ar' ? 'نظام حماية' : 'Protection System' %></h3>
+                    <p><%= lang === 'ar' ? 'نظام حماية متكامل مع فلترة للمحتوى الضار' : 'Complete protection system with content filtering' %></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3><%= lang === 'ar' ? 'إحصائيات متقدمة' : 'Advanced Statistics' %></h3>
+                    <p><%= lang === 'ar' ? 'إحصائيات متقدمة للسيرفر والأعضاء' : 'Advanced server and member statistics' %></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3><%= lang === 'ar' ? 'إدارة الرومات' : 'Channel Management' %></h3>
+                    <p><%= lang === 'ar' ? 'قفل وفتح الرومات والتحكم بالوضع البطيء' : 'Lock/unlock channels and control slowmode' %></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section class="commands" id="commands">
+        <div class="container">
+            <h2 class="section-title">
+                <%= lang === 'ar' ? '📋 الأوامر المتاحة' : '📋 Available Commands' %>
+            </h2>
+            <div class="commands-grid">
+                <div class="command-category">
+                    <h3>🤖 AI</h3>
+                    <ul>
+                        <li><code>/ask</code> - <%= lang === 'ar' ? 'اسأل البوت سؤالاً' : 'Ask the bot a question' %></li>
+                    </ul>
+                </div>
+                <div class="command-category">
+                    <h3>⚙️ <%= lang === 'ar' ? 'إدارية' : 'Admin' %></h3>
+                    <ul>
+                        <li><code>/clear</code> - <%= lang === 'ar' ? 'مسح الرسائل' : 'Clear messages' %></li>
+                        <li><code>/kick</code> - <%= lang === 'ar' ? 'طرد عضو' : 'Kick member' %></li>
+                        <li><code>/ban</code> - <%= lang === 'ar' ? 'حظر عضو' : 'Ban member' %></li>
+                        <li><code>/timeout</code> - <%= lang === 'ar' ? 'كتم عضو' : 'Timeout member' %></li>
+                        <li><code>/warn</code> - <%= lang === 'ar' ? 'تحذير' : 'Warn' %></li>
+                        <li><code>/lock</code> - <%= lang === 'ar' ? 'قفل الروم' : 'Lock channel' %></li>
+                        <li><code>/unlock</code> - <%= lang === 'ar' ? 'فتح الروم' : 'Unlock channel' %></li>
+                        <li><code>/slowmode</code> - <%= lang === 'ar' ? 'وضع بطيء' : 'Slowmode' %></li>
+                        <li><code>/announce</code> - <%= lang === 'ar' ? 'إعلان' : 'Announce' %></li>
+                        <li><code>/say</code> - <%= lang === 'ar' ? 'جعل البوت يقول' : 'Make bot say' %></li>
+                    </ul>
+                </div>
+                <div class="command-category">
+                    <h3>🛠️ <%= lang === 'ar' ? 'عامة' : 'Utility' %></h3>
+                    <ul>
+                        <li><code>/help</code> - <%= lang === 'ar' ? 'قائمة المساعدة' : 'Help menu' %></li>
+                        <li><code>/ping</code> - <%= lang === 'ar' ? 'سرعة الاتصال' : 'Ping' %></li>
+                        <li><code>/userinfo</code> - <%= lang === 'ar' ? 'معلومات العضو' : 'User info' %></li>
+                        <li><code>/serverinfo</code> - <%= lang === 'ar' ? 'معلومات السيرفر' : 'Server info' %></li>
+                        <li><code>/botinfo</code> - <%= lang === 'ar' ? 'معلومات البوت' : 'Bot info' %></li>
+                        <li><code>/invite</code> - <%= lang === 'ar' ? 'رابط الدعوة' : 'Invite link' %></li>
+                        <li><code>/language</code> - <%= lang === 'ar' ? 'تغيير اللغة' : 'Change language' %></li>
+                        <li><code>/report</code> - <%= lang === 'ar' ? 'الإبلاغ' : 'Report' %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">MG AI</span>
+                    <span class="footer-badge">444</span>
+                    <p><%= lang === 'ar' ? 'بوت ذكاء اصطناعي متكامل' : 'Complete AI Bot' %></p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=<%= config.clientId %>&permissions=8&scope=bot%20applications.commands" target="_blank" rel="noopener noreferrer">
+                        <%= lang === 'ar' ? 'دعوة البوت' : 'Invite Bot' %>
+                    </a>
+                    <a href="<%= config.supportServer %>" target="_blank" rel="noopener noreferrer">
+                        <%= lang === 'ar' ? 'سيرفر الدعم' : 'Support Server' %>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span class="copyright">MG CoDe</span>
+                <span class="separator">|</span>
+                <span>444</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
+

@@ -1,26 +1,31 @@
-# TODO - إصلاح نظام الترجمة وتحسينات المشروع
+# TODO - تحسين HTML ليتناسب مع CSS
 
-## ✅ المنجز - المرحلة 1: نظام الترجمة
-- [x] فهم النظام الحالي وتحليل المشاكل
-- [x] إصلاح `locales/ar.json` - إزالة كود JS المخلوط
-- [x] إصلاح `locales/en.json` - إزالة كود JS المخلوط
-- [x] إزالة الكود المكرر في نهاية `server.js`
-- [x] إضافة API endpoint `/api/translations` في `server.js`
-- [x] إصلاح نظام الترجمة في `index.html` (المستقلة) + Fallback محلي
-- [x] تنظيف `discord-ai-bot/languages/en.json` (إزالة مفتاح غير مستخدم)
-- [x] EJS templates (`index.ejs`, `dashboard.ejs`) تستخدم الترجمة عبر session - تعمل بكفاءة
+## ✅ تم - الخطوة 1: إضافة `.discord-icon` في CSS
+- إضافة تعريف CSS لأيقونة الديسكورد باستخدام SVG مضمن
 
-## ✅ المنجز - المرحلة 2: إصلاحات وتحسينات
-- [x] إصلاح تذييل `index.html` - إزالة `<link>` المكسور واستخدام `<a>` صحيح
-- [x] إصلاح مسار الشعار في `dashboard-pro.html` - تغيير `/444.png` إلى `/img/444.png`
-- [x] إنشاء `index i18.js` - ملف أدوات الترجمة (i18n utilities)
-- [x] إنشاء `.env.example` - مثال إعدادات البيئة
-- [x] تحديث `TODO.md` - إضافة المهام المنجزة
+## ✅ تم - الخطوة 2: تحسين هيكلة index.ejs
+- إصلاح محاذاة `<img>` في user-menu
+- إضافة كلاس `btn-secondary` لزر تسجيل الخروج
+- استبدال `style="display:inline"` بـ `class="lang-form"`
+- إضافة `aria-label` لزر القائمة للوصولية
+- إضافة `target="_blank" rel="noopener noreferrer"` للروابط الخارجية
 
-## 🔲 المهام المستقبلية (Future Tasks)
-- [ ] ربط الإحصائيات الحقيقية من البوت إلى لوحة التحكم
-- [ ] إضافة نظام الإشعارات المباشرة (WebSocket)
-- [ ] تحسين أداء الموقع (Lazy loading, Caching)
-- [ ] إضافة نسخة Light Theme
-- [ ] اختبار شامل لجميع الصفحات
+## ✅ تم - الخطوة 3: تحسين هيكلة dashboard.ejs
+- إصلاح محاذاة `<img>` في user-menu و user-profile
+- إضافة كلاس `btn-secondary` لزر تسجيل الخروج
+- استبدال `style="display:inline"` بـ `class="lang-form"`
+- إضافة `aria-label` و `rel="noopener noreferrer"`
+
+## ✅ تم - الخطوة 4: إضافة `.lang-form` في CSS
+- إضافة كلاس CSS لتعويض `style="display:inline"`
+
+## ✅ تم - جميع التعديلات
+- كلاسات CSS متوافقة تماماً مع هيكل HTML
+- تحسينات في الأمان والوصولية
+
+## ✅ تم - إصلاحات إضافية
+- إصلاح تذييل `index.html` (النسخة المستقلة)
+- إصلاح مسار الشعار في `dashboard-pro.html`
+- إنشاء `.env.example` لمتغيرات البيئة
+- إنشاء `index i18.js` لأدوات الترجمة المركزية
 
